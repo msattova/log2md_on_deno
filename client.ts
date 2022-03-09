@@ -1,4 +1,3 @@
-import { serve } from "https://deno.land/std@0.114.0/http/server.ts";
 
 import { Convert } from "./convert.ts"
 
@@ -33,5 +32,3 @@ export async function handler(req: Request): Promise<Response> {
       return new Response("Invalid method", { status: 405 });
   }
 }
-
-serve(handler);
