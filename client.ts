@@ -4,7 +4,11 @@ import { Convert } from "./convert.ts"
 
 const html = `
 <form method="POST" action="/">
-  <input type="text" name="name" placeholder="file path...">
+  <label for="codearea">
+  変換したいログをテキストエディタで開いてCtrl+A, Ctrl+Cしたものを以下にCtrl+V：
+  </label>
+  <textarea id="codearea" name="code" rows="20", cols="70">
+  </textarea>
   <button type="submit">Submit</button>
 </form>
 `;
@@ -19,7 +23,7 @@ export async function handler(req: Request): Promise<Response> {
 
     case "POST": {
       const body = await req.formData();
-      const filepath = body.get("name") || "anonymous";
+      const filepath = body.get("code") || "anonymous";
       const conv = new Convert(filepath.toString());
       conv.run();
       return new Response(conv.out_str);

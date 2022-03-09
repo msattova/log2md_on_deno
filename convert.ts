@@ -6,16 +6,17 @@ export class Convert{
     private filename = "";
     public out_str = "";
 
-    constructor(public readonly filepath:string) {}
+    //constructor(public readonly filepath:string) {}
+    constructor(public readonly inputcode:string){}
 
-    private setup = async (): Promise<string> => {
-      this.filename = this.filepath.split('/').reverse()[0].split('.')[0];
-      const readCode = await Deno.readTextFile(this.filepath);
-      return readCode.replace(/<br>/g, "\n");
+    private setup = /*async*/ (): string => {
+      //this.filename = this.filepath.split('/').reverse()[0].split('.')[0];
+      //const readCode = await Deno.readTextFile(this.filepath);
+      return this.inputcode.replace(/<br>/g, "\n");
     };
-    private parseLog = (code: Promise<string>) => {
+    private parseLog = (code: string) => {
         const p_child: Array<Array<string>> = [];
-        this.out_str += `# ${this.filename}\n\n`
+        this.out_str += `# （タイトル）\n\n`
         const doc = new DOMParser().parseFromString(code.toString(), 'text/html')!;
         const p_all = doc.querySelectorAll("p")!;
         for (const e of p_all){
@@ -65,8 +66,11 @@ export class Convert{
 
     public run(){
         const code = this.setup();
+        //console.log(code);
         const p_child = this.parseLog(code);
+        //console.log(p_child);
         const msg_list = this.make_msglist(p_child);
+        //console.log(msg_list);
         this.make_out_str(msg_list);
         this.write_str();
     }
