@@ -72,7 +72,7 @@ export class Convert{
         const msg_list = this.make_msglist(p_child);
         //console.log(msg_list);
         this.make_out_str(msg_list);
-        this.write_str();
+        //this.write_str();
     }
 }
 
