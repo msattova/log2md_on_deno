@@ -1,80 +1,47 @@
-import { DOMParser } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts"
 
+export class Convert {
 
-export class Convert{
-
-    private filename = "";
     public out_str = "";
 
-    //constructor(public readonly filepath:string) {}
-    constructor(public readonly inputcode:string){}
+    constructor(public readonly inputcode: string) { }
 
-    private setup = /*async*/ (): string => {
-      //this.filename = this.filepath.split('/').reverse()[0].split('.')[0];
-      //const readCode = await Deno.readTextFile(this.filepath);
-      return this.inputcode.replace(/<br>/g, "\n");
+    private catch_p = (code: string): Array<Array<string>> => {
+        return code.trim().replace(/\r?\n/g, "")
+            .match(new RegExp("<p(?: .+?)?>.*?<\/p>", "g"))!
+            .map(p_child => p_child.match(new RegExp("<span>.*?<\/span>", "g")))
+            .filter((item): item is NonNullable<typeof item> => item != null)
+            .map(in_span => in_span.map(s => s.replace(/<\/?span>/g, ""))
+                .map(e => e.trim()));
     };
-    private parseLog = (code: string) => {
-        const p_child: Array<Array<string>> = [];
-        this.out_str += `# （タイトル）\n\n`
-        const doc = new DOMParser().parseFromString(code.toString(), 'text/html')!;
-        const p_all = doc.querySelectorAll("p")!;
-        for (const e of p_all){
-            const in_list: Array<string> = [];
-            let tmp_str = '';
-            for (const child of e.childNodes){
-                tmp_str = child.textContent.trim();
-                in_list.push(tmp_str);
-            }
-            p_child.push(in_list);
-        }
-        return p_child;
+
+    private setup = (code: string): Array<Array<string>> => {
+        console.log("setup");
+        return this.catch_p(code)
+            .map(s => s.map(e => e.replace(/<br>/g, "\n")));
     };
-    private make_msglist = (p_child: Array<Array<string>>) => {
-        const msg_list: Array<Array<string>> = [];
-        for (const i of p_child) {
-          const in_list: Array<string> = [];
-          i.forEach((e, index) => {
-           if (index % 2 == 1) {
-              in_list.push(e);
-            }
-          });
-          msg_list.push(in_list);
-        }
-        return msg_list;
-    };
+
     private make_out_str = (msg_list: Array<Array<string>>) => {
-        for (const m of msg_list){
+        let out = "# (タイトル)\n\n"
+        for (const m of msg_list) {
             const tab = m[0];
-            const name = m[1];
-            const mention = m[2];
-            if (mention == ''){
+            const name = m[1].replace(/\*/g, "\\*");
+            const mention = m[2].replace(/\*/g, "\\*");
+            if (mention == '') {
                 continue;
             }
-            if (name != ''){
-                this.out_str += `${tab} **${name}** : ${mention}\n\n`;
+            if (name != '') {
+                out += `${tab} **${name}** : ${mention}\n\n`;
             } else {
-                this.out_str += `${tab} ${name} : ${mention}\n\n`
+                out += `${tab} ${name} : ${mention}\n\n`
             }
         }
-    };
-    private write_str = () => {
-        console.log(this.out_str);
-        const write = Deno.writeTextFile("./out.md", this.out_str);
-        write.then(() => console.log("File written to ./out.md"));
+        return out.replace(/&gt;/g, ">")
+            .replace(/&lt;/g, "<");
     };
 
-    public run(){
-        const code = this.setup();
-        //console.log(code);
-        const p_child = this.parseLog(code);
-        //console.log(p_child);
-        const msg_list = this.make_msglist(p_child);
-        //console.log(msg_list);
-        this.make_out_str(msg_list);
-        //this.write_str();
+    public run() {
+        const code = this.setup(this.inputcode);
+        this.out_str = this.make_out_str(code);
+        //console.log(this.out_str);
     }
 }
-
-
-
