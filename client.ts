@@ -22,10 +22,12 @@ export async function handler(req: Request): Promise<Response> {
 
     case "POST": {
       const body = await req.formData();
-      const filepath = body.get("code") || "anonymous";
-      const conv = new Convert(filepath.toString());
+      const htmlcode = body.get("code") || "anonymous";
+      const conv = new Convert(htmlcode.toString());
       conv.run();
-      return new Response(conv.out_str);
+      return new Response(conv.out_str, {
+        headers: { "content-type": "text/plain; charset=utf-8" },
+      });
     }
 
     default:
