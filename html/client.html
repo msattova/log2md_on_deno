@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" type="text/css" href="../style/destyle.css" />
+  <link rel="stylesheet" type="text/css" href="../style/style.css" />
+  <script>
+    window.addEventListener('DOMContentLoaded', function(){
+      document.getElementById("input__selectfile").addEventListener('change', function(e){
+        var file_reader = new FileReader();
+        file_reader.addEventListener('load', function(e) {
+          console.log(e.target.result);
+          document.getElementById("input__confirm").value = e.target.result;
+        });
+        file_reader.readAsText(e.target.files[0]);
+      });
+    });
+  </script>
+</head>
+<body>
+  <header id="header">
+    <h1 class="title">LOG to markdown</h1>
+  </header>
+  <div class="input">
+    <label for="input__selectfile">ファイルを選択：</label>
+    <input type="file" name="choose" id="input__selectfile" accept="text/html">
+    <div class="input__rows">
+      <form class="input__rows__code" id="input__rows__code" action="/" method="post">
+        <textarea name="confirm" id="input__confirm" rows="5"> 確認用 </textarea>
+        <button id="input__button" form="input__rows__code" type="submit">
+          送信
+        </button>
+      </form>
+    </div>
+  </div>
+  <div class="result">
+    <label for="result__data">
+      変換結果：
+    </label>
+    <textarea name="result" class="result__data" id="result__data" rows="40" readonly>ここに変換結果が出ます</textarea>
+  </div>
+  <footer>
+  </footer>
+</body>
+</html>

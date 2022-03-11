@@ -1,0 +1,122 @@
+:root {
+  --space-unit: 1em;
+  --space-xxs: calc(0.25 * var(--space-unit));
+  --space-xs:  calc(0.5  * var(--space-unit));
+  --space-sm:  calc(0.75 * var(--space-unit));
+  --space-md:  calc(1.25 * var(--space-unit));
+  --space-lg:  calc(2.0  * var(--space-unit));
+  --space-xl:  calc(3.25 * var(--space-unit));
+  --space-xxl: calc(5.25 * var(--space-unit));
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  color: black;
+  background-color: white;
+}
+
+#header {
+  height: 3em;
+  width: 100%;
+  font-size: large;
+  background-color: black;
+  color: lightgray;
+  margin: 0;
+}
+
+#header h1 {
+  margin-left: var(--space-xs);
+  font-size: var(--space-lg);
+  font-weight: bold;
+  padding-top: var(--space-xxs);
+  padding-bottom: 0;
+}
+
+.result {
+  width: 100%;
+  padding-top: var(--space-xs);
+}
+
+.result__data {
+  text-align: left;
+  background-color: whitesmoke;
+  width: 100%;
+  border-radius: 1em;
+  border: #333333 solid 2px;
+  padding: var(--space-sm);
+  font-size: large;
+}
+
+label {
+  display: block;
+  font-size: medium;
+  margin-top: var(--space-sm);
+  margin-bottom: var(--space-xs);
+  margin-left: var(--space-sm);
+  font-weight: bolder;
+}
+
+.input {
+  margin-top: var(--space-md);
+  padding: var(--space-sm);
+  width: 100%;
+}
+
+.input__rows {
+  margin-top: var(--space-sm);
+}
+
+.input__rows__code {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.input__rows__code textarea {
+  background-color: lightgray;
+  display: inline-block;
+  margin-bottom: var(--space-md);
+}
+
+.input__rows__code button {
+  text-align: center;
+  display: inline-block;
+  margin-top: auto;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: var(--space-md);
+  -ms-flex-preferred-size: auto;
+      flex-basis: auto;
+  padding: 0.7em 1.4em;
+  font-size: var(--space-md);
+  font-weight: 700;
+  width: 10em;
+  border-radius: 50vh;
+  background-color: #d9d9d9;
+}
+
+.input__rows__code button:hover {
+  text-decoration: none;
+  background-color: #a6a6a6;
+}
+
+@media screen and (max-width: 523px) {
+  .input__rows__code textarea {
+    -ms-flex-preferred-size: 100%;
+        flex-basis: 100%;
+  }
+}
+
+@media screen and (min-width: 524px) {
+  .input__rows__code textarea {
+    -ms-flex-preferred-size: 60%;
+        flex-basis: 60%;
+  }
+}
+/*# sourceMappingURL=style.css.map */

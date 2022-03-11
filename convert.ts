@@ -15,7 +15,6 @@ export class Convert {
     };
 
     private setup = (code: string): Array<Array<string>> => {
-        console.log("setup");
         return this.catch_p(code)
             .map(s => s.map(e => e.replace(/<br>/g, "\n")));
     };
