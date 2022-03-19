@@ -25,8 +25,15 @@ export async function handler(req: Request): Promise<Response> {
       const htmlcode = body.get("confirm") || "anonymous";
       //console.log(htmlcode);
       const conv = new Convert(htmlcode.toString());
-      conv.run();
-      return new Response(code.replace("ここに変換結果が出ます", conv.out_str), {
+      let result: string;
+      try{
+        conv.run();
+        result = conv.out_str;
+      } catch(e) {
+        console.log(`error occured: ${e}`);
+        result = '変換に失敗しました';
+      }
+      return new Response(code.replace("ここに変換結果が出ます", result), {
         headers: { "content-type": "text/html; charset=utf-8" },
       });
     }
